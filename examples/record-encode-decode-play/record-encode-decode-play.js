@@ -37,7 +37,10 @@
 
   var recording = false;
 
+
+  var ws = new WebSocket('ws://localhost:8000/webSocketServer');
   recordButton.onclick = function(){
+
     console.log('Started recording...');
     if(!recording){
       recording=true;
@@ -130,7 +133,9 @@
       ;
 
     for (; i < l; i++) {
-      audioQueue.write(decoder.decode_float(opus_packets[i]));
+      var data = opus_packets[i];
+      audioQueue.write(decoder.decode_float(data));
+      ws.send(data);
     }
   }
 
